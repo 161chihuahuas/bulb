@@ -1,0 +1,70 @@
+{
+  "author": {
+    "name": "Lily Anne Hall",
+    "email": "lily@tacticalchihuahua.lol"
+  },
+  "bugs": {
+    "url": "https://github.com/tacticalchihuahua/granax/issues"
+  },
+  "dependencies": {
+    "7zip": "0.0.6",
+    "async": "^2.3.0",
+    "merge": "^1.2.1",
+    "mkdirp": "^0.5.1",
+    "mv": "^2.1.1",
+    "ncp": "^2.0.0",
+    "progress": "^2.0.3",
+    "cheerio": "1.0.0-rc.2",
+    "follow-redirects": "^1.2.4",
+    "semver": "^5.4.1",
+    "rimraf": "^2.6.3"
+  },
+  "description": "complete client implementation of the tor control protocol",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "coveralls": "^3.0.2",
+    "eslint": "^5.15.1",
+    "istanbul": "^0.4.5",
+    "jsdoc": "^3.4.3",
+    "mocha": "^5.2.0",
+    "proxyquire": "^1.7.11",
+    "sinon": "^2.1.0"
+  },
+  "engines": {
+    "node": ">=8.9.0"
+  },
+  "homepage": "https://gitlab.com/deadcanaries/granax#readme",
+  "keywords": [
+    "tor",
+    "onion",
+    "control",
+    "protocol",
+    "hidden",
+    "service",
+    "anonymous",
+    "dark",
+    "net",
+    "deep",
+    "web",
+    "stem"
+  ],
+  "license": "AGPL-3.0",
+  "main": "index.js",
+  "name": "@tacticalchihuahua/granax",
+  "optionalDependencies": {
+    "7zip": "0.0.6",
+    "ncp": "^2.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tacticalchihuahua/granax.git"
+  },
+  "scripts": {
+    "coverage": "istanbul cover _mocha -- --recursive",
+    "linter": "eslint index.js lib test",
+    "postinstall": "node script/download-tbb.js",
+    "test": "npm run test-suite && npm run linter",
+    "test-suite": "mocha test/** --recursive"
+  },
+  "version": "3.3.0"
+}
