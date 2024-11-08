@@ -2,3 +2,4 @@ bin/data
 bin/debug 
 bin/tor
 node_modules
+bin/.bundle.gz
