@@ -23,6 +23,7 @@
   "description": "complete client implementation of the tor control protocol",
   "devDependencies": {
     "chai": "^3.5.0",
+    "clean-jsdoc-theme": "^4.3.0",
     "coveralls": "^3.0.2",
     "eslint": "^5.15.1",
     "istanbul": "^0.4.5",
@@ -65,7 +66,8 @@
     "linter": "eslint index.js lib test",
     "postinstall": "node script/download-tbb.js",
     "test": "npm run test-suite && npm run linter",
-    "test-suite": "mocha test/** --recursive"
+    "test-suite": "mocha test/** --recursive",
+    "generate-docs": "mkdir -p ./docs && rm -r ./docs && jsdoc lib -r -R README.md -u ./tutorials -c .jsdoc.json --verbose -d ./docs"
   },
   "version": "3.3.0"
 }
