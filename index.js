@@ -7,7 +7,7 @@
 'use strict';
 
 const path = require('path');
-const { spawn, execFileSync } = require('child_process');
+const { spawn, execFileSync } = require('node:child_process');
 const { platform } = require('os');
 const { Socket } = require('net');
 const { readFileSync } = require('fs');
@@ -73,9 +73,11 @@ module.exports = function(options, torrcOptions) {
 
   /* istanbul ignore next */
   process.on('exit', () => child.kill());
-  child.stdout.once('data', () => setTimeout(() => connect(), 1000));
+  child.stdout.once('data', () => {
+    setTimeout(() => connect(), 1000);
+  });
   child.on('error', (err) => controller.emit('error', err));
-  child.on('exit', (code) => {
+  child.on('close', (code) => {
     controller.emit('error', new Error('Tor exited with code ' + code));
   });
 

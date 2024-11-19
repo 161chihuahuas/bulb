@@ -1,38 +1,31 @@
-Granax
-======
+# granax *embeddable tor for node.js*
 
-Complete client implementation of the [Tor Control Protocol](https://gitweb.torproject.org/torspec.git/plain/control-spec.txt). 
-Control a running Tor instance from Node.js!
+Granax is a complete client implementation of the [Tor Control Protocol](https://gitweb.torproject.org/torspec.git/plain/control-spec.txt). 
+It is designed to allow developers simple integration of the privacy-preserving properties of the [Tor](https://torprojects.org) network into their applications. 
 
-Usage
------
 
-Install via NPM:
+## usage
 
 ```
 npm install @tacticalchihuahua/granax --save
 ```
 
-As part of the installation process, Granax will download the Tor Browser 
-Bundle local to itself and use the included Tor executable, however you may 
-opt for Granax to use the system Tor installed using your distribution's 
-package manager by setting `GRANAX_USE_SYSTEM_TOR=1`. 
+> As part of the installation process, it will download the Tor Expert 
+> Bundle and use the included Tor executable.
 
-You can also tell Granax to install the latest alpha release of Tor instead of 
-the latest stable release, with `GRANAX_USE_TOR_ALPHA=1`.
 
 ```js
-const tor = require('@tacticalchihuahua/granax')();
+import granax from '@tacticalchihuahua/granax';
 
-tor.on('ready', function() {
-  tor.createHiddenService('127.0.0.1:8080', (err, result) => {
-    console.info(`Service URL: ${result.serviceId}.onion`);
-    console.info(`Private Key: ${result.privateKey}`);
+async function demo() {
+  const tor = await granax();
+
+  // Start a hidden service that points to a local service
+  await hiddenService = await tor.createHiddenService('127.0.0.1:8080');
+
+    console.info(`Service URL: ${hiddenService.serviceId}.onion`);
+    console.info(`Private Key: ${hiddenService.privateKey}`);
   });
-});
-
-tor.on('error', function(err) {
-  console.error(err);
 });
 ```
 
@@ -42,31 +35,38 @@ Make sure that `ControlPort=9051` (or your preferred port) is set in your
 `torrc`, then you may open the control socket and issue commands:
 
 ```js
-const { connect } = require('net');
-const { TorController } = require('@tacticalchihuahua/granax');
-const tor = new TorController(connect(9051), options);
+import { connect } = require('net');
+import { TorController } = require('@tacticalchihuahua/granax');
 
-tor.on('ready', function() {
-  // party!
-});
+function demo() {
+  const tor = new TorController(connect(9051), options);
+  
+  // TorController is an EventEmitter
+  tor.on('ready', () => {
+    
+  });
+}
 ```
 
 > Note that if using cookie authentication, the Node.js process must have the 
 > appropriate privileges to read the cookie file. Usually, this means running 
 > as the same user that is running Tor.
 
-Resources
+Further Tor documentation is linked in the next section. For a complete API 
+reference, JSDoc generated documentation from source code comments is provided
+here.
+
+links
 ---------
 
-* [Granax Documentation](https://tacticalchihuahua.github.io/granax)
-* [Tor Control Specification](https://gitweb.torproject.org/torspec.git/plain/control-spec.txt)
+* [Tor Control Specification](https://github.com/torproject/torspec/blob/main/control-spec.txt)
 * [Tor Documentation](https://www.torproject.org/docs/documentation.html.en)
 
-License
+license
 -------
 
-Granax - Complete client implementation of the Tor Control Protocol  
-Copyright (C) 2019 Lily Anne Hall
+> Granax - Complete client implementation of the Tor Control Protocol  
+> Copyright (C) 2019 Lily Anne Hall
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published

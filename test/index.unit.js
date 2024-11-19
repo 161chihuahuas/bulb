@@ -11,6 +11,8 @@ describe('@module granax', function() {
 
   describe('@exports', function() {
 
+    this.timeout(10000);
+
     let sandbox = sinon.sandbox.create();
     let _execFileSync = sandbox.stub();
     let _proc = new EventEmitter();
@@ -25,7 +27,7 @@ describe('@module granax', function() {
     }
     let _readFileSync = sandbox.stub().returns('127.0.0.1:9051');
     let granax = proxyquire('..', {
-      child_process: {
+      'node:child_process': {
         execFileSync: _execFileSync,
         spawn: _spawn
       },
@@ -39,7 +41,9 @@ describe('@module granax', function() {
     sandbox.stub(granax, 'tor').returns('tor');
     let tor = null;
 
-    before(() => tor = granax());
+    before(() => {
+      tor = granax();
+    });
     after(() => sandbox.restore());
 
     it('should return a TorController', function() {

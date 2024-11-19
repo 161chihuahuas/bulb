@@ -4,7 +4,7 @@
     "email": "lily@tacticalchihuahua.lol"
   },
   "bugs": {
-    "url": "https://github.com/tacticalchihuahua/granax/issues"
+    "url": "https://github.com/lilyannehall/granax/issues"
   },
   "dependencies": {
     "7zip": "0.0.6",
@@ -20,7 +20,7 @@
     "semver": "^5.4.1",
     "rimraf": "^2.6.3"
   },
-  "description": "complete client implementation of the tor control protocol",
+  "description": "embeddable tor for node.js",
   "devDependencies": {
     "chai": "^3.5.0",
     "clean-jsdoc-theme": "^4.3.0",
@@ -33,7 +33,7 @@
     "sinon": "^2.1.0"
   },
   "engines": {
-    "node": ">=8.9.0"
+    "node": ">=22"
   },
   "homepage": "https://gitlab.com/deadcanaries/granax#readme",
   "keywords": [
@@ -67,7 +67,7 @@
     "postinstall": "node script/download-tbb.js",
     "test": "npm run test-suite && npm run linter",
     "test-suite": "mocha test/** --recursive",
-    "generate-docs": "mkdir -p ./docs && rm -r ./docs && jsdoc lib -r -R API.md -u ./tutorials -c .jsdoc.json --verbose -d ./docs"
+    "generate-docs": "mkdir -p ./docs && rm -r ./docs && jsdoc index.js lib -r -c .jsdoc.json --verbose -d ./docs"
   },
   "version": "3.3.0"
 }
