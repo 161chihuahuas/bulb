@@ -17,12 +17,11 @@ npm install @tacticalchihuahua/granax --save
 ```js
 import granax from '@tacticalchihuahua/granax';
 
-async function demo() {
-  const tor = await granax();
+granax().on('ready', demo);
 
+function demo() {
   // Start a hidden service that points to a local service
-  await hiddenService = await tor.createHiddenService('127.0.0.1:8080');
-
+  this.createHiddenService('127.0.0.1:8080', function(err, hiddenService) {
     console.info(`Service URL: ${hiddenService.serviceId}.onion`);
     console.info(`Private Key: ${hiddenService.privateKey}`);
   });
