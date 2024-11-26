@@ -22,6 +22,7 @@ function semverfix(ver) {
  */
 function getLatestTorBrowserVersion(platform = os.platform(), alpha = false) {
   return new Promise((resolve, reject) => {
+    return resolve('13.5.9');
     https.get(base, (res) => {
       let body = '';
 

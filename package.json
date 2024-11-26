@@ -69,5 +69,5 @@
     "test-suite": "mocha test/** --recursive",
     "generate-docs": "mkdir -p ./docs && rm -r ./docs && jsdoc index.js lib -r -c .jsdoc.json --verbose -d ./docs"
   },
-  "version": "3.3.0"
+  "version": "3.3.1"
 }
