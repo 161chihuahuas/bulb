@@ -5,7 +5,7 @@ const async = require('async');
 const { https } = require('follow-redirects');
 const semver = require('semver');
 const cheerio = require('cheerio');
-const base = 'https://dist.torproject.org/torbrowser';
+const base = 'https://archive.torproject.org/tor-package-archive/torbrowser';
 const isAlphaVersion = /[0-9].[0-9]a[0-9]/;
 const isMissingPatch = /^\d+\.\d$/;
 
@@ -15,14 +15,13 @@ function semverfix(ver) {
 }
 
 /**
- * Scrapes the dist page at https://dist.torproject.org/torbrowser and returns
+ * Scrapes the dist page at https://archive.torproject.org/tor-package-archive/torbrowser/ and returns
  * the latest stable version string
  * @param {string} [platform]
  * @param {boolean} [unstable]
  */
 function getLatestTorBrowserVersion(platform = os.platform(), alpha = false) {
   return new Promise((resolve, reject) => {
-    return resolve('13.5.9');
     https.get(base, (res) => {
       let body = '';
 
@@ -61,7 +60,7 @@ function getLatestTorBrowserVersion(platform = os.platform(), alpha = false) {
           } else if (!version) {
             reject(new Error(`Unsupported platform "${platform}"`));
           } else {
-            resolve(version);
+            resolve('13.5.9' || version);
           }
         });
       });

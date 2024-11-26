@@ -29,7 +29,8 @@ exports.getTorBrowserLink = function(platform, version, callback) {
   }
 
   function createHref(v) {
-    const link = `https://dist.torproject.org/torbrowser/${v}/tor-expert-bundle-`;
+    const link = `https://archive.torproject.org/tor-package-archive/torbrowser/${v}/tor-expert-bundle-`;
+//    const link = `https://dist.torproject.org/torbrowser/${v}/tor-expert-bundle-`;
 
     switch (platform) {
       case 'win32':
