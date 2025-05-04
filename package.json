@@ -7,28 +7,25 @@
     "url": "https://github.com/lilyannehall/granax/issues"
   },
   "dependencies": {
-    "7zip": "0.0.6",
     "async": "^2.3.0",
+    "cheerio": "^1.0.0",
     "commander": "^2.11.0",
-    "merge": "^1.2.1",
+    "follow-redirects": "^1.2.4",
+    "merge": "^2.1.1",
     "mkdirp": "^0.5.1",
     "mv": "^2.1.1",
-    "ncp": "^2.0.0",
     "progress": "^2.0.3",
-    "cheerio": "1.0.0-rc.2",
-    "follow-redirects": "^1.2.4",
-    "semver": "^5.4.1",
-    "rimraf": "^2.6.3"
+    "rimraf": "^2.6.3",
+    "semver": "^5.4.1"
   },
   "description": "embeddable tor for node.js",
   "devDependencies": {
     "chai": "^3.5.0",
     "clean-jsdoc-theme": "^4.3.0",
-    "coveralls": "^3.0.2",
     "eslint": "^5.15.1",
     "istanbul": "^0.4.5",
-    "jsdoc": "^3.4.3",
-    "mocha": "^5.2.0",
+    "jsdoc": "^4.0.4",
+    "mocha": "^11.2.2",
     "proxyquire": "^1.7.11",
     "sinon": "^2.1.0"
   },
@@ -69,5 +66,5 @@
     "test-suite": "mocha test/** --recursive",
     "generate-docs": "mkdir -p ./docs && rm -r ./docs && jsdoc index.js lib -r -c .jsdoc.json --verbose -d ./docs"
   },
-  "version": "3.3.2"
+  "version": "3.4.0"
 }
