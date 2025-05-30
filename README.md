@@ -21,7 +21,8 @@ Complete documentation can be [found here](https://lilyanne.me/granax).
 ### example: hidden tcp echo server
 
 ```js
-const { TorContext } = require('@tacticalchihuahua/granax')};
+const { TorContext } = require('@tacticalchihuahua/granax');
+
 const tor = await TorContext.create();
 const server = tor.createServer((socket) => socket.pipe(socket)); 
 const address = await server.listen(); // { host, port}

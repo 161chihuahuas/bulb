@@ -1,5 +1,4 @@
 /**
- * Embeddable Tor and Control Protocol.
  * @module granax
  */
 
