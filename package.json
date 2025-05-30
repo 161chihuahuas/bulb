@@ -45,10 +45,11 @@
     "url": "git+https://github.com/161chihuahuas/granax.git"
   },
   "scripts": {
-    "linter": "eslint index.js lib test",
+    "linter": "eslint index.js lib --no-config-lookup",
     "postinstall": "node script/postinstall.js",
-    "test": "npm run test-suite && npm run linter",
-    "test-suite": "mocha test --exit",
+    "test": "npm run test-unit && npm run test-e2e && npm run linter",
+    "test-unit": "mocha test/*.unit.js --exit",
+    "test-e2e": "mocha test/*.e2e.js --exit",
     "generate-docs": "mkdir -p ./docs && rm -r ./docs && jsdoc index.js lib -r -c .jsdoc.json --verbose -d ./docs"
   },
   "version": "4.0.0"
