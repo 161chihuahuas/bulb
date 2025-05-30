@@ -1,15 +1,15 @@
 'use strict';
 
-const replies = require('../lib/replies');
+const { ControlReply } = require('../lib/replies');
 const { expect } = require('chai');
 
 
-describe('@module:granax/replies', function() {
+describe('@module:granax/ControlReply', function() {
 
   describe('AUTHCHALLENGE', function() {
 
     it('should return hash+nonce', function() {
-      let result = replies.AUTHCHALLENGE(
+      let result = ControlReply.AUTHCHALLENGE(
         ['AUTHCHALLENGE SERVERHASH=hash SERVERNONCE=nonce']
       );
       expect(result.hash).to.equal('hash');
@@ -17,7 +17,7 @@ describe('@module:granax/replies', function() {
     });
 
     it('should return hash', function() {
-      let result = replies.AUTHCHALLENGE(
+      let result = ControlReply.AUTHCHALLENGE(
         ['AUTHCHALLENGE SERVERHASH=hash']
       );
       expect(result.hash).to.equal('hash');
@@ -28,7 +28,7 @@ describe('@module:granax/replies', function() {
   describe('PROTOCOLINFO', function() {
 
     it('should return auth, protocol, version', function() {
-      let result = replies.PROTOCOLINFO([
+      let result = ControlReply.PROTOCOLINFO([
         'PROTOCOL 1',
         'AUTH METHODS=COOKIE,SAFECOOKIE COOKIEFILE=/path/to/cookie with/space',
         'VERSION Tor="0.2.9.10"'
@@ -41,7 +41,7 @@ describe('@module:granax/replies', function() {
     });
 
     it('should return auth, protocol, version', function() {
-      let result = replies.PROTOCOLINFO([
+      let result = ControlReply.PROTOCOLINFO([
         'PROTOCOL 1',
         'AUTH METHODS=COOKIE,SAFECOOKIE COOKIEFILE=/path/to/cookie',
         'VERSION Tor="0.2.9.10"'
@@ -54,7 +54,7 @@ describe('@module:granax/replies', function() {
     });
 
     it('should return auth, protocol, version', function() {
-      let result = replies.PROTOCOLINFO([
+      let result = ControlReply.PROTOCOLINFO([
         'PROTOCOL 1',
         'AUTH METHODS=PASSWORD',
         'VERSION Tor="0.2.9.10"'
@@ -70,7 +70,7 @@ describe('@module:granax/replies', function() {
   describe('ADD_ONION', function() {
 
     it('should return the service id and private key', function() {
-      let result = replies.ADD_ONION([
+      let result = ControlReply.ADD_ONION([
         'ServiceID=myonionaddress',
         'PrivateKey=someprivatekey'
       ]);
@@ -79,7 +79,7 @@ describe('@module:granax/replies', function() {
     });
 
     it('should return the service id', function() {
-      let result = replies.ADD_ONION([
+      let result = ControlReply.ADD_ONION([
         'ServiceID=myonionaddress'
       ]);
       expect(result.serviceId).to.equal('myonionaddress');
@@ -90,12 +90,12 @@ describe('@module:granax/replies', function() {
   describe('GETCONF', function() {
 
     it('should return the value portions', function() {
-      let result = replies.GETCONF([
+      let result = ControlReply.GETCONF([
         'SomeKey=value1',
         'SomeKey=value2'
       ]);
-      expect(result[0]).to.equal('value1');
-      expect(result[1]).to.equal('value2');
+      expect(result.conf[0]).to.equal('value1');
+      expect(result.conf[1]).to.equal('value2');
     });
 
   });
@@ -103,17 +103,17 @@ describe('@module:granax/replies', function() {
   describe('GETINFO', function() {
 
     it('should return multiline strings', function() {
-      let result = replies.GETINFO([
+      let result = ControlReply.GETINFO([
         'SomeKey=valuestart',
         'SomeKey=valuemiddle',
         'SomeKey=valueend'
       ]);
-      expect(result).to.equal('valuestart\nvaluemiddle\nvalueend');
+      expect(result.info).to.equal('valuestart\nvaluemiddle\nvalueend');
     });
 
     it('should return singleline strings', function() {
-      let result = replies.GETINFO(['SomeKey=someValue']);
-      expect(result).to.equal('someValue');
+      let result = ControlReply.GETINFO(['SomeKey=someValue']);
+      expect(result.info).to.equal('someValue');
     });
 
   });

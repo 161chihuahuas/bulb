@@ -1,5 +1,7 @@
-bin/data 
-bin/debug 
-bin/tor
+.bin/data 
+.bin/debug 
+.bin/tor
 node_modules
-bin/.bundle.gz
+.bin/.bundle.gz
+.data
+.torrc

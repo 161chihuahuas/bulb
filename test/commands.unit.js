@@ -1,15 +1,15 @@
 'use strict';
 
-const commands = require('../lib/commands');
+const { ControlCommand } = require('../lib/commands');
 const { expect } = require('chai');
 
 
-describe('@module:granax/commands', function() {
+describe('@module:granax/ControlCommand', function() {
 
   describe('AUTHENTICATE', function() {
 
     it('should return auth message with token', function() {
-      expect(commands.AUTHENTICATE('token')).to.equal(
+      expect(ControlCommand.AUTHENTICATE('token').toString()).to.equal(
         'AUTHENTICATE token'
       );
     });
@@ -19,7 +19,7 @@ describe('@module:granax/commands', function() {
   describe('AUTHCHALLENGE', function() {
 
     it('should return auth challenge message', function() {
-      expect(commands.AUTHCHALLENGE('nonce')).to.equal(
+      expect(ControlCommand.AUTHCHALLENGE('nonce').toString()).to.equal(
         'AUTHCHALLENGE SAFECOOKIE nonce'
       );
     });
@@ -29,7 +29,7 @@ describe('@module:granax/commands', function() {
   describe('PROTOCOLINFO', function() {
 
     it('should return protocol info message', function() {
-      expect(commands.PROTOCOLINFO()).to.equal('PROTOCOLINFO');
+      expect(ControlCommand.PROTOCOLINFO().toString()).to.equal('PROTOCOLINFO');
     });
 
   });
@@ -37,18 +37,18 @@ describe('@module:granax/commands', function() {
   describe('ADD_ONION', function() {
 
     it('should return add onion message with basic auth', function() {
-      expect(commands.ADD_ONION([{target: '127.0.0.1:8080'}], {
+      expect(ControlCommand.ADD_ONION([{target: '127.0.0.1:8080'}], {
         clientName: 'user',
         clientBlob: 'pass',
         basicAuth: true
-      })).to.equal(
+      }).toString()).to.equal(
         'ADD_ONION NEW:BEST Flags=BasicAuth Port=80,127.0.0.1:8080 ' +
           'ClientAuth=user:pass'
       );
     });
 
     it('should return add onion message', function() {
-      expect(commands.ADD_ONION([{target: '127.0.0.1:8080'}])).to.equal(
+      expect(ControlCommand.ADD_ONION([{target: '127.0.0.1:8080'}]).toString()).to.equal(
         'ADD_ONION NEW:BEST Port=80,127.0.0.1:8080'
       );
     });
@@ -58,19 +58,19 @@ describe('@module:granax/commands', function() {
         {target: '127.0.0.1:8080'},
         {virtualPort: 8070, target: '127.0.0.1:8090'}
       ];
-      expect(commands.ADD_ONION(ports)).to.equal(
+      expect(ControlCommand.ADD_ONION(ports).toString()).to.equal(
         'ADD_ONION NEW:BEST Port=80,127.0.0.1:8080 Port=8070,127.0.0.1:8090'
       );
     });
 
     it('should return add onion message with given single port', function() {
-      expect(commands.ADD_ONION([{virtualPort: 8080}])).to.equal(
+      expect(ControlCommand.ADD_ONION([{virtualPort: 8080}]).toString()).to.equal(
         'ADD_ONION NEW:BEST Port=8080'
       );
     });
 
     it('should return add onion message with default port', function() {
-      expect(commands.ADD_ONION([])).to.equal(
+      expect(ControlCommand.ADD_ONION([]).toString()).to.equal(
         'ADD_ONION NEW:BEST Port=80'
       );
     });
@@ -78,15 +78,15 @@ describe('@module:granax/commands', function() {
     describe('ports as string and virtualport in options', function() {
 
       it('should return add onion message', function() {
-        expect(commands.ADD_ONION('127.0.0.1:8080')).to.equal(
+        expect(ControlCommand.ADD_ONION('127.0.0.1:8080').toString()).to.equal(
           'ADD_ONION NEW:BEST Port=80,127.0.0.1:8080'
         );
       });
 
       it('should return add onion message with correct vport', function() {
-        expect(commands.ADD_ONION('127.0.0.1:8080',{
+        expect(ControlCommand.ADD_ONION('127.0.0.1:8080',{
           virtualPort: 8080
-        })).to.equal(
+        }).toString()).to.equal(
           'ADD_ONION NEW:BEST Port=8080,127.0.0.1:8080'
         );
       });
@@ -98,7 +98,7 @@ describe('@module:granax/commands', function() {
   describe('DEL_ONION', function() {
 
     it('should return del onion message', function() {
-      expect(commands.DEL_ONION('serviceid')).to.equal(
+      expect(ControlCommand.DEL_ONION('serviceid').toString()).to.equal(
         'DEL_ONION serviceid'
       );
     });
@@ -108,7 +108,7 @@ describe('@module:granax/commands', function() {
   describe('SETCONF', function() {
 
     it('should return set config message', function() {
-      expect(commands.SETCONF('key', 'value')).to.equal(
+      expect(ControlCommand.SETCONF('key', 'value').toString()).to.equal(
         'SETCONF key="value"'
       );
     });
@@ -118,7 +118,7 @@ describe('@module:granax/commands', function() {
   describe('RESETCONF', function() {
 
     it('should return reset config message', function() {
-      expect(commands.RESETCONF('key')).to.equal('RESETCONF key');
+      expect(ControlCommand.RESETCONF('key').toString()).to.equal('RESETCONF key');
     });
 
   });
@@ -126,7 +126,7 @@ describe('@module:granax/commands', function() {
   describe('GETCONF', function() {
 
     it('should return get config message', function() {
-      expect(commands.GETCONF('key')).to.equal('GETCONF key');
+      expect(ControlCommand.GETCONF('key').toString()).to.equal('GETCONF key');
     });
 
   });
@@ -134,7 +134,7 @@ describe('@module:granax/commands', function() {
   describe('SAVECONF', function() {
 
     it('should return save config message', function() {
-      expect(commands.SAVECONF()).to.equal('SAVECONF');
+      expect(ControlCommand.SAVECONF().toString()).to.equal('SAVECONF');
     });
 
   });
@@ -142,7 +142,7 @@ describe('@module:granax/commands', function() {
   describe('SIGNAL', function() {
 
     it('should return signal message', function() {
-      expect(commands.SIGNAL('signal')).to.equal('SIGNAL signal');
+      expect(ControlCommand.SIGNAL('signal').toString()).to.equal('SIGNAL signal');
     });
 
   });
@@ -150,7 +150,7 @@ describe('@module:granax/commands', function() {
   describe('MAPADDRESS', function() {
 
     it('should return map address message', function() {
-      expect(commands.MAPADDRESS('target.tld', 'replace.tld')).to.equal(
+      expect(ControlCommand.MAPADDRESS('target.tld', 'replace.tld').toString()).to.equal(
         'MAPADDRESS target.tld=replace.tld'
       );
     });
@@ -160,13 +160,13 @@ describe('@module:granax/commands', function() {
   describe('EXTENDCIRCUIT', function() {
 
     it('should return extend circuit with purpose', function() {
-      expect(commands.EXTENDCIRCUIT('circuitid', 'general')).to.equal(
+      expect(ControlCommand.EXTENDCIRCUIT('circuitid', 'general').toString()).to.equal(
         'EXTENDCIRCUIT circuitid purpose="general"'
       );
     });
 
     it('should return extend circuit', function() {
-      expect(commands.EXTENDCIRCUIT('circuitid')).to.equal(
+      expect(ControlCommand.EXTENDCIRCUIT('circuitid').toString()).to.equal(
         'EXTENDCIRCUIT circuitid'
       );
     });
@@ -176,7 +176,7 @@ describe('@module:granax/commands', function() {
   describe('SETCIRCUITPURPOSE', function() {
 
     it('should return set circuit purpose message', function() {
-      expect(commands.SETCIRCUITPURPOSE('circuitid', 'general')).to.equal(
+      expect(ControlCommand.SETCIRCUITPURPOSE('circuitid', 'general').toString()).to.equal(
         'SETCIRCUITPURPOSE circuitid purpose="general"'
       );
     });
@@ -186,16 +186,16 @@ describe('@module:granax/commands', function() {
   describe('ATTACHSTREAM', function() {
 
     it('should return attach stream message with hop', function() {
-      expect(commands.ATTACHSTREAM('streamid', {
+      expect(ControlCommand.ATTACHSTREAM('streamid', {
         circuitId: 'circuitid',
         hopNumber: 2
-      })).to.equal(
+      }).toString()).to.equal(
         'ATTACHSTREAM streamid circuitid HOP=2'
       );
     });
 
     it('should return attach stream message', function() {
-      expect(commands.ATTACHSTREAM('streamid', { circuitId: 0 })).to.equal(
+      expect(ControlCommand.ATTACHSTREAM('streamid', { circuitId: 0 }).toString()).to.equal(
         'ATTACHSTREAM streamid 0'
       );
     });
@@ -205,20 +205,20 @@ describe('@module:granax/commands', function() {
   describe('POSTDESCRIPTOR', function() {
 
     it('should return post descriptor message with cache', function() {
-      expect(commands.POSTDESCRIPTOR({
+      expect(ControlCommand.POSTDESCRIPTOR({
         key: 'value',
         beep: 'boop'
-      })).to.equal(
+      }).toString()).to.equal(
         '+POSTDESCRIPTOR purpose=general cache=yes\r\n' +
           'key=value\r\nbeep=boop\r\n.'
       );
     });
 
     it('should return post descriptor message without cache', function() {
-      expect(commands.POSTDESCRIPTOR({
+      expect(ControlCommand.POSTDESCRIPTOR({
         key: 'value',
         beep: 'boop'
-      }, { cache: false, purpose: 'controller' })).to.equal(
+      }, { cache: false, purpose: 'controller' }).toString()).to.equal(
         '+POSTDESCRIPTOR purpose=controller cache=no\r\n' +
           'key=value\r\nbeep=boop\r\n.'
       );
@@ -229,7 +229,7 @@ describe('@module:granax/commands', function() {
   describe('REDIRECTSTREAM', function() {
 
     it('should return redirect stream message', function() {
-      expect(commands.REDIRECTSTREAM('streamid', '127.0.0.1', 8080)).to.equal(
+      expect(ControlCommand.REDIRECTSTREAM('streamid', '127.0.0.1', 8080).toString()).to.equal(
         'REDIRECTSTREAM streamid 127.0.0.1 8080'
       );
     });
@@ -239,7 +239,7 @@ describe('@module:granax/commands', function() {
   describe('CLOSESTREAM', function() {
 
     it('should return close stream message', function() {
-      expect(commands.CLOSESTREAM('streamid')).to.equal(
+      expect(ControlCommand.CLOSESTREAM('streamid').toString()).to.equal(
         'CLOSESTREAM streamid 1'
       );
     });
@@ -249,13 +249,13 @@ describe('@module:granax/commands', function() {
   describe('CLOSECIRCUIT', function() {
 
     it('should return close circuit message if unused', function() {
-      expect(commands.CLOSECIRCUIT('circuitid', { ifUnused: true })).to.equal(
+      expect(ControlCommand.CLOSECIRCUIT('circuitid', { ifUnused: true }).toString()).to.equal(
         'CLOSECIRCUIT circuitid IfUnused'
       );
     });
 
     it('should return close circuit message', function() {
-      expect(commands.CLOSECIRCUIT('circuitid')).to.equal(
+      expect(ControlCommand.CLOSECIRCUIT('circuitid').toString()).to.equal(
         'CLOSECIRCUIT circuitid'
       );
     });
@@ -265,7 +265,7 @@ describe('@module:granax/commands', function() {
   describe('QUIT', function() {
 
     it('should return quit message', function() {
-      expect(commands.QUIT()).to.equal('QUIT');
+      expect(ControlCommand.QUIT().toString()).to.equal('QUIT');
     });
 
   });
@@ -273,13 +273,13 @@ describe('@module:granax/commands', function() {
   describe('RESOLVE', function() {
 
     it('should return resolve message', function() {
-      expect(commands.RESOLVE('some.host.name')).to.equal(
+      expect(ControlCommand.RESOLVE('some.host.name').toString()).to.equal(
         'RESOLVE some.host.name'
       );
     });
 
     it('should return reverse resolve message', function() {
-      expect(commands.RESOLVE('some.host.name', true)).to.equal(
+      expect(ControlCommand.RESOLVE('some.host.name', true).toString()).to.equal(
         'RESOLVE mode=reverse some.host.name'
       );
     });
@@ -289,7 +289,7 @@ describe('@module:granax/commands', function() {
   describe('LOADCONF', function() {
 
     it('should return load config message', function() {
-      expect(commands.LOADCONF('my config text file')).to.equal(
+      expect(ControlCommand.LOADCONF('my config text file').toString()).to.equal(
         '+LOADCONF\r\nmy config text file\r\n.'
       );
     });
@@ -299,7 +299,7 @@ describe('@module:granax/commands', function() {
   describe('TAKEOWNERSHIP', function() {
 
     it('should return take ownership message', function() {
-      expect(commands.TAKEOWNERSHIP()).to.equal('TAKEOWNERSHIP');
+      expect(ControlCommand.TAKEOWNERSHIP().toString()).to.equal('TAKEOWNERSHIP');
     });
 
   });
@@ -307,7 +307,7 @@ describe('@module:granax/commands', function() {
   describe('DROPGUARDS', function() {
 
     it('should return drop guards message', function() {
-      expect(commands.DROPGUARDS()).to.equal('DROPGUARDS');
+      expect(ControlCommand.DROPGUARDS().toString()).to.equal('DROPGUARDS');
     });
 
   });
@@ -315,11 +315,11 @@ describe('@module:granax/commands', function() {
   describe('HSFETCH', function() {
 
     it('should return hidden service fetch message', function() {
-      expect(commands.HSFETCH('onionurl')).to.equal('HSFETCH onionurl');
+      expect(ControlCommand.HSFETCH('onionurl').toString()).to.equal('HSFETCH onionurl');
     });
 
     it('should return hidden service fetch message with server', function() {
-      expect(commands.HSFETCH('onionurl', 'servername')).to.equal(
+      expect(ControlCommand.HSFETCH('onionurl', 'servername').toString()).to.equal(
         'HSFETCH onionurl SERVER=servername'
       );
     });
@@ -329,13 +329,13 @@ describe('@module:granax/commands', function() {
   describe('HSPOST', function() {
 
     it('should return hidden service post message', function() {
-      expect(commands.HSPOST('my descriptor')).to.equal(
+      expect(ControlCommand.HSPOST('my descriptor').toString()).to.equal(
         '+HSPOST\r\nmy descriptor\r\n.'
       );
     });
 
     it('should return hidden service post message with server', function() {
-      expect(commands.HSPOST('my descriptor', 'servername')).to.equal(
+      expect(ControlCommand.HSPOST('my descriptor', 'servername').toString()).to.equal(
         '+HSPOST\r\nSERVER=servername\r\nmy descriptor\r\n.'
       );
     });
@@ -345,7 +345,7 @@ describe('@module:granax/commands', function() {
   describe('GETINFO', function() {
 
     it('should return get info message', function() {
-      expect(commands.GETINFO('keyword')).to.equal('GETINFO keyword');
+      expect(ControlCommand.GETINFO('keyword').toString()).to.equal('GETINFO keyword');
     });
 
   });
@@ -353,7 +353,7 @@ describe('@module:granax/commands', function() {
   describe('SETEVENTS', function() {
 
     it('should return set events message', function() {
-      expect(commands.SETEVENTS(['DEBUG', 'ADDRMAP', 'TEST'])).to.equal(
+      expect(ControlCommand.SETEVENTS(['DEBUG', 'ADDRMAP', 'TEST']).toString()).to.equal(
         'SETEVENTS DEBUG ADDRMAP TEST'
       );
     });

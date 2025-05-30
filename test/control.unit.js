@@ -3,16 +3,16 @@
 const proxyquire = require('proxyquire');
 const { expect } = require('chai');
 const sinon = require('sinon');
-const stream = require('stream');
-const TorController = require('../lib/controller');
+const stream = require('node:stream');
+const { TorControl } = require('../lib/control');
 
 
-describe('TorController', function() {
+describe('TorControl', function() {
 
   describe('@static createChallengeResponse', function() {
 
     it('should return a sha256 hmac hex string', function() {
-      expect(TorController.createChallengeResponse(
+      expect(TorControl.createChallengeResponse(
         '000000',
         '000000',
         '000000'
@@ -26,7 +26,7 @@ describe('TorController', function() {
   describe('@static @method createReplySplitter', function() {
 
     it('should split distinct message replies into separate', function(done) {
-      let splitter = TorController.createReplySplitter();
+      let splitter = TorControl.createReplySplitter();
       let replies = 0;
       splitter.on('data', () => replies++);
       splitter.on('end', () => {
@@ -49,15 +49,15 @@ describe('TorController', function() {
 
   describe('@constructor', function() {
 
-    let sandbox = sinon.sandbox.create();
+    let sandbox = sinon.createSandbox();
     let sock = new stream.Duplex({ read: () => null, write: () => null });
     let tor = null;
 
     before(function() {
-      sandbox.stub(TorController, 'createReplySplitter').returns(
+      sandbox.stub(TorControl, 'createReplySplitter').returns(
         new stream.PassThrough()
       );
-      tor = new TorController(sock, { authOnConnect: false });
+      tor = new TorControl(sock, { authOnConnect: false });
       sandbox.stub(tor, '_handleClose');
       sandbox.stub(tor, '_handleConnect');
       sandbox.stub(tor, '_handleError');
@@ -88,7 +88,7 @@ describe('TorController', function() {
 
     it('should auth with SAFECOOKIE', function(done) {
       let sock = new stream.Duplex({ read: () => null, write: () => null });
-      let tor = new TorController(sock, { authOnConnect: false });
+      let tor = new TorControl(sock, { authOnConnect: false });
       sinon.stub(tor, '_getAuthCookie').callsArgWith(
         0,
         null,
@@ -109,7 +109,7 @@ describe('TorController', function() {
 
     it('should auth with COOKIE', function(done) {
       let sock = new stream.Duplex({ read: () => null, write: () => null });
-      let tor = new TorController(sock, { authOnConnect: false });
+      let tor = new TorControl(sock, { authOnConnect: false });
       sinon.stub(tor, '_getAuthCookie').callsArgWith(
         0,
         null,
@@ -134,7 +134,7 @@ describe('TorController', function() {
 
     it('should emit error if auth fails', function(done) {
       let sock = new stream.Duplex({ read: () => null, write: () => null });
-      let tor = new TorController(sock, { authOnConnect: true });
+      let tor = new TorControl(sock, { authOnConnect: true });
       sinon.stub(tor, '_authOnConnect').callsArgWith(
         0,
         new Error('Auth failed')
@@ -148,7 +148,7 @@ describe('TorController', function() {
 
     it('should emit ready if auth succeeds', function(done) {
       let sock = new stream.Duplex({ read: () => null, write: () => null });
-      let tor = new TorController(sock, { authOnConnect: true });
+      let tor = new TorControl(sock, { authOnConnect: true });
       sinon.stub(tor, '_authOnConnect').callsArg(0);
       tor.on('ready', done);
       sock.emit('connect');
@@ -156,7 +156,7 @@ describe('TorController', function() {
 
     it('should emit ready if no auth', function(done) {
       let sock = new stream.Duplex({ read: () => null, write: () => null });
-      let tor = new TorController(sock, { authOnConnect: false });
+      let tor = new TorControl(sock, { authOnConnect: false });
       let _authOnConnect = sinon.stub(tor, '_authOnConnect').callsArg(0);
       tor.on('ready', () => {
         expect(_authOnConnect.called).to.equal(false);
@@ -171,7 +171,7 @@ describe('TorController', function() {
 
     it('should bubble socket close', function(done) {
       let sock = new stream.Duplex({ read: () => null, write: () => null });
-      let tor = new TorController(sock, { authOnConnect: false });
+      let tor = new TorControl(sock, { authOnConnect: false });
       tor.on('close', done);
       sock.emit('close');
     });
@@ -182,7 +182,7 @@ describe('TorController', function() {
 
     it('should bubble socket error', function(done) {
       let sock = new stream.Duplex({ read: () => null, write: () => null });
-      let tor = new TorController(sock, { authOnConnect: false });
+      let tor = new TorControl(sock, { authOnConnect: false });
       tor.on('error', () => done());
       sock.emit('error', new Error('Socket error'));
     });
@@ -193,7 +193,7 @@ describe('TorController', function() {
 
     it('should call handler with parsed reply', function(done) {
       let sock = new stream.Duplex({ read: () => null, write: () => null });
-      let tor = new TorController(sock, { authOnConnect: false });
+      let tor = new TorControl(sock, { authOnConnect: false });
       tor._stack.push({ method: 'GETINFO', callback: test });
       function test(err, data) {
         expect(data).to.equal('testvalue');
@@ -206,7 +206,7 @@ describe('TorController', function() {
 
     it('should call handler with raw reply', function(done) {
       let sock = new stream.Duplex({ read: () => null, write: () => null });
-      let tor = new TorController(sock, { authOnConnect: false });
+      let tor = new TorControl(sock, { authOnConnect: false });
       tor._stack.push({ method: 'NOMETHOD', callback: test });
       function test(err, data) {
         expect(data[0]).to.equal('some arbitrary data');
@@ -219,7 +219,7 @@ describe('TorController', function() {
 
     it('should call handler with error', function(done) {
       let sock = new stream.Duplex({ read: () => null, write: () => null });
-      let tor = new TorController(sock, { authOnConnect: false });
+      let tor = new TorControl(sock, { authOnConnect: false });
       tor._stack.push({ method: 'TEST', callback: test });
       function test(err) {
         expect(err.message).to.equal('Chill out br0');
@@ -232,7 +232,7 @@ describe('TorController', function() {
 
     it('should call handler with error', function(done) {
       let sock = new stream.Duplex({ read: () => null, write: () => null });
-      let tor = new TorController(sock, { authOnConnect: false });
+      let tor = new TorControl(sock, { authOnConnect: false });
       tor._stack.push({ method: 'TEST', callback: test });
       function test(err) {
         expect(err.message).to.equal('You did something wrong');
@@ -245,7 +245,7 @@ describe('TorController', function() {
 
     it('should emit an event', function(done) {
       let sock = new stream.Duplex({ read: () => null, write: () => null });
-      let tor = new TorController(sock, { authOnConnect: false });
+      let tor = new TorControl(sock, { authOnConnect: false });
       tor.on('EVENT', () => done());
       tor._handleReply([
         '650 EVENT'
@@ -258,7 +258,7 @@ describe('TorController', function() {
 
     it('should bubble error from get protocol', function(done) {
       let sock = new stream.Duplex({ read: () => null, write: () => null });
-      let tor = new TorController(sock, { authOnConnect: false });
+      let tor = new TorControl(sock, { authOnConnect: false });
       sinon.stub(tor, 'getProtocolInfo').callsArgWith(0, new Error('Failed'));
       tor._getAuthCookie((err) => {
         expect(err.message).to.equal('Failed');
@@ -268,7 +268,7 @@ describe('TorController', function() {
 
     it('should callback fs read error', function(done) {
       let sock = new stream.Duplex({ read: () => null, write: () => null });
-      let tor = new TorController(sock, { authOnConnect: false });
+      let tor = new TorControl(sock, { authOnConnect: false });
       sinon.stub(tor, 'getProtocolInfo').callsArgWith(0, null, {
         auth: {
           cookieFile: 'NOTAREALFILE.IMSERIOUS',
@@ -283,7 +283,7 @@ describe('TorController', function() {
 
     it('should callback with no cookie if not one', function(done) {
       let sock = new stream.Duplex({ read: () => null, write: () => null });
-      let tor = new TorController(sock, { authOnConnect: false });
+      let tor = new TorControl(sock, { authOnConnect: false });
       sinon.stub(tor, 'getProtocolInfo').callsArgWith(0, null, {
         auth: {
           cookieFile: null,
@@ -304,7 +304,7 @@ describe('TorController', function() {
 
     it('should add the method+cb to stack and write command', function(done) {
       let sock = new stream.Duplex({ read: () => null, write: () => null });
-      let tor = new TorController(sock, { authOnConnect: false });
+      let tor = new TorControl(sock, { authOnConnect: false });
       let write = sinon.stub(tor.socket, 'write');
       tor._send('COMMAND [flags] arg1=val1,arg2=val2', function() {
         expect(write.calledWithMatch('COMMAND [flags] arg1=val1,arg2=val2'))
@@ -316,7 +316,7 @@ describe('TorController', function() {
 
     it('should default callback to emit error on err', function(done) {
       let sock = new stream.Duplex({ read: () => null, write: () => null });
-      let tor = new TorController(sock, { authOnConnect: false });
+      let tor = new TorControl(sock, { authOnConnect: false });
       tor.on('error', (err) => {
         expect(err.message).to.equal('Failed');
         done();
@@ -365,11 +365,11 @@ describe('TorController', function() {
 
       it('should call _send with the proper command', function(done) {
         let commandFunc = sinon.stub().returns('');
-        let TorController = proxyquire('../lib/controller', {
+        let TorControl = proxyquire('../lib/controller', {
           './commands': { [command]: commandFunc }
         });
         let sock = new stream.Duplex({ read: () => null, write: () => null });
-        let tor = new TorController(sock, { authOnConnect: false });
+        let tor = new TorControl(sock, { authOnConnect: false });
         let _send = sinon.stub(tor, '_send').callsArg(1);
         let numArgs = tor[alias].length;
         let args = [];
@@ -406,7 +406,7 @@ describe('TorController', function() {
 
       it('should call signal with the correct name', function(done) {
         let sock = new stream.Duplex({ read: () => null, write: () => null });
-        let tor = new TorController(sock, { authOnConnect: false });
+        let tor = new TorControl(sock, { authOnConnect: false });
         let sig = sinon.stub(tor, 'signal').callsArg(1);
         tor[alias](() => {
           expect(sig.calledWithMatch(signal)).to.equal(true);

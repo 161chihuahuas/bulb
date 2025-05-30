@@ -1,144 +1,76 @@
 /**
+ * Embeddable Tor and Control Protocol.
  * @module granax
- * @license AGPL-3.0
- * @author Gordon Hall <gordonh@member.fsf.org>
  */
 
 'use strict';
 
-const path = require('path');
-const { spawn, execFileSync } = require('node:child_process');
-const { platform } = require('os');
-const { Socket } = require('net');
-const { readFileSync } = require('fs');
-
-const BIN_PATH = path.join(__dirname, 'bin');
-
+/**
+ * {@link module:granax/control~TorControl}
+ */
+module.exports.TorControl = require('./lib/control').TorControl;
 
 /**
- * Returns a {@link TorController} with automatically constructed socket
- * to the local Tor bundle executable
- * @param {object} options
- * @param {object} torrcOptions
- * @returns {TorController}
+ * {@link module:granax/control~ControlCommand}
  */
-module.exports = function(options, torrcOptions) {
-  let socket = new Socket();
-  let controller = new module.exports.TorController(socket, options);
-  let [torrc, datadir] = module.exports.torrc(torrcOptions);
-
-  let exe = path.basename(module.exports.tor(platform()));
-  let tor = path.join(BIN_PATH, 'tor', exe);
-  let env = { LD_LIBRARY_PATH: path.join(BIN_PATH, 'tor') };
-
-  if (process.env.GRANAX_USE_SYSTEM_TOR && process.platform === 'linux') {
-    tor = exe;
-    env = {};
-  }
-
-  let args = process.env.GRANAX_TOR_ARGS
-    ? process.env.GRANAX_TOR_ARGS.split(' ')
-    : [];
-  let child = spawn(tor, ['-f', torrc].concat(args), {
-    cwd: BIN_PATH,
-    env
-  });
-  let portFileReads = 0;
-
-  controller.process = child; // NB: Expose the tor process to userland
-
-  function connect() {
-    let port = null;
-
-    try {
-      port = parseInt(readFileSync(path.join(
-        datadir,
-        'control-port'
-      )).toString().split(':')[1]);
-    } catch (err) {
-      /* istanbul ignore next */
-      portFileReads++;
-
-      /* istanbul ignore next */
-      if (portFileReads <= 20) {
-        return setTimeout(() => connect(), 1000);
-      } else {
-        return controller.emit('error',
-          new Error('Failed to read control port'));
-      }
-    }
-
-    socket.connect(port, '127.0.0.1');
-  }
-
-  /* istanbul ignore next */
-  process.on('exit', () => child.kill());
-  child.stdout.once('data', () => {
-    setTimeout(() => connect(), 1000);
-  });
-  child.on('error', (err) => controller.emit('error', err));
-  child.on('close', (code) => {
-    controller.emit('error', new Error('Tor exited with code ' + code));
-  });
-
-  return controller;
-};
+module.exports.ControlCommand = require('./lib/commands').ControlCommand;
 
 /**
- * Returns the local path to the tor bundle
- * @returns {string}
+ * {@link module:granax/control~ControlReply}
  */
-module.exports.tor = function(platform) {
-  /* eslint complexity: ["error", 8] */
-  let torpath = null;
-
-  /* istanbul ignore else */
-  if (process.env.GRANAX_USE_SYSTEM_TOR) {
-    try {
-      torpath = execFileSync(
-        platform === 'win32' ? 'where' : 'which',
-        ['tor']
-      ).toString().trim();
-    } catch (err) {
-      /* istanbul ignore next */
-      throw new Error('Tor is not installed');
-    }
-
-    return torpath;
-  }
-
-  switch (platform) {
-    case 'win32':
-      torpath = path.join(BIN_PATH, 'tor.exe');
-      break;
-    case 'darwin':
-    case 'android':
-    case 'linux':
-      torpath = path.join(BIN_PATH, 'tor');
-      break;
-    default:
-      throw new Error(`Unsupported platform "${platform}"`);
-  }
-
-  return torpath;
-};
+const replies = require('./lib/replies');
 
 /**
- * {@link TorController}
+ * {@link module:granax/control~ControlReply}
  */
-module.exports.TorController = require('./lib/controller');
+module.exports.ControlReply = replies.ControlReply;
 
 /**
- * {@link module:granax/commands}
+ * {@link module:granax/control~ProtocolInfoReply}
  */
-module.exports.commands = require('./lib/commands');
+module.exports.AuthChallengeReply = replies.AuthChallengeReply;
 
 /**
- * {@link module:granax/replies}
+ * {@link module:granax/control~ProtocolInfoReply}
  */
-module.exports.replies = require('./lib/replies');
+module.exports.ProtocolInfoReply = replies.ProtocolInfoReply;
 
 /**
- * {@link module:granax/torrc}
+ * {@link module:granax/control~AddOnionReply}
  */
-module.exports.torrc = require('./lib/torrc');
+module.exports.AddOnionReply = replies.AddOnionReply;
+
+/**
+ * {@link module:granax/control~GetInfoReply}
+ */
+module.exports.GetInfoReply = replies.GetInfoReply;
+
+/**
+ * {@link module:granax/control~GetConfReply}
+ */
+module.exports.GetConfReply = replies.GetConfReply;
+
+/**
+ * {@link module:granax/context~TorContext}
+ */
+module.exports.TorContext = require('./lib/context').TorContext;
+
+/**
+ * {@link module:granax/config~TorConfig}
+ */
+module.exports.TorConfig = require('./lib/config').TorConfig;
+
+/**
+ * {@link module:granax/network~HiddenServer}
+ */
+module.exports.HiddenServer = require('./lib/network').HiddenServer;
+
+/**
+ * {@link module:granax/network~HiddenSocket}
+ */
+module.exports.HiddenSocket = require('./lib/network').HiddenSocket;
+
+/**
+ * {@link module:granax/network~TorHttpAgent}
+ */
+module.exports.TorHttpAgent = require('./lib/network').TorHttpAgent;
