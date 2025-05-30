@@ -9,23 +9,21 @@ describe('@module granax/torrc', function() {
 
   describe('@exports', function() {
 
-    it('should write the torrc to tmp', function() {
+    it('should write the torrc', function() {
       const _mkdirpSync = sinon.stub();
       const _writeFileSync = sinon.stub();
-      const torrc = proxyquire('../lib/torrc', {
-        mkdirp: {
-          sync: _mkdirpSync
-        },
-        fs: {
+      const { TorConfig } = proxyquire('../lib/config', {
+        'node:fs': {
+          mkdirSync: _mkdirpSync,
           writeFileSync: _writeFileSync
         }
       });
-      const result = torrc();
+      const torrc = new TorConfig();
+      torrc.tmpWrite();
       expect(_mkdirpSync.called).to.equal(true);
       expect(_writeFileSync.called).to.equal(true);
-      expect(typeof result[0]).to.equal('string');
-      expect(typeof result[1]).to.equal('string');
-      expect(Array.isArray(result)).to.equal(true);
+      expect(torrc.content.length > 0).to.equal(true);
+      expect(typeof torrc.datadir).to.equal('string');
     });
 
   });
