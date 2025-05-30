@@ -48,7 +48,7 @@
     "linter": "eslint index.js lib test",
     "postinstall": "node script/postinstall.js",
     "test": "npm run test-suite && npm run linter",
-    "test-suite": "mocha test/** --recursive",
+    "test-suite": "mocha test --exit",
     "generate-docs": "mkdir -p ./docs && rm -r ./docs && jsdoc index.js lib -r -c .jsdoc.json --verbose -d ./docs"
   },
   "version": "4.0.0"
