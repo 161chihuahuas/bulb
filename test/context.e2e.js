@@ -8,7 +8,7 @@ describe('@class TorContext', function() {
 
   this.timeout(120000); // Depending on where this is running it could take a while to bootstrap
 
-  it('@static create()', function() {
+  it('create a context, server, proxy, socket, and makes a round trip', function() {
     return new Promise(async (resolve, reject) => {
       const tor = await TorContext.create();
       const server = tor.createServer(echoAndClose); 
