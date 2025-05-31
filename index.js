@@ -14,38 +14,35 @@ module.exports.TorControl = require('./lib/control').TorControl;
  */
 module.exports.ControlCommand = require('./lib/commands').ControlCommand;
 
-/**
- * {@link module:granax/control~ControlReply}
- */
 const replies = require('./lib/replies');
 
 /**
- * {@link module:granax/control~ControlReply}
+ * {@link module:granax/replies~ControlReply}
  */
 module.exports.ControlReply = replies.ControlReply;
 
 /**
- * {@link module:granax/control~ProtocolInfoReply}
+ * {@link module:granax/replies~AuthChallengeReply}
  */
 module.exports.AuthChallengeReply = replies.AuthChallengeReply;
 
 /**
- * {@link module:granax/control~ProtocolInfoReply}
+ * {@link module:granax/replies~ProtocolInfoReply}
  */
 module.exports.ProtocolInfoReply = replies.ProtocolInfoReply;
 
 /**
- * {@link module:granax/control~AddOnionReply}
+ * {@link module:granax/replies~AddOnionReply}
  */
 module.exports.AddOnionReply = replies.AddOnionReply;
 
 /**
- * {@link module:granax/control~GetInfoReply}
+ * {@link module:granax/replies~GetInfoReply}
  */
 module.exports.GetInfoReply = replies.GetInfoReply;
 
 /**
- * {@link module:granax/control~GetConfReply}
+ * {@link module:granax/replies~GetConfReply}
  */
 module.exports.GetConfReply = replies.GetConfReply;
 

@@ -19,7 +19,7 @@ describe('@module granax/torrc', function() {
         }
       });
       const torrc = new TorConfig();
-      torrc.tmpWrite();
+      torrc.writeLocal();
       expect(_mkdirpSync.called).to.equal(true);
       expect(_writeFileSync.called).to.equal(true);
       expect(torrc.content.length > 0).to.equal(true);
