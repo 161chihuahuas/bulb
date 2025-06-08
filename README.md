@@ -1,4 +1,4 @@
-# 🧅 granax *embedded tor for node.js*
+# 🧅 granax ~ *embedded tor for node.js*
 
 Granax is a complete client implementation of the [Tor Control Protocol](https://gitweb.torproject.org/torspec.git/plain/control-spec.txt). 
 It is designed to allow developers simple integration of the privacy-preserving properties of the [Tor](https://torprojects.org) network into their applications. 
