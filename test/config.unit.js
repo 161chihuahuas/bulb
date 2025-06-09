@@ -5,7 +5,7 @@ const { expect } = require('chai');
 const sinon = require('sinon');
 
 
-describe('@module granax/torrc', function() {
+describe('@module bulb/torrc', function() {
 
   describe('@exports', function() {
 

@@ -4,7 +4,7 @@ const { ControlReply } = require('../lib/replies');
 const { expect } = require('chai');
 
 
-describe('@module:granax/ControlReply', function() {
+describe('@module:bulb/ControlReply', function() {
 
   describe('AUTHCHALLENGE', function() {
 

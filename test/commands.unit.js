@@ -4,7 +4,7 @@ const { ControlCommand } = require('../lib/commands');
 const { expect } = require('chai');
 
 
-describe('@module:granax/ControlCommand', function() {
+describe('@module:bulb/ControlCommand', function() {
 
   describe('AUTHENTICATE', function() {
 

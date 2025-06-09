@@ -4,7 +4,7 @@
     "email": "161chihuahuas@disroot.org"
   },
   "bugs": {
-    "url": "https://github.com/161chihuahuas/granax/issues"
+    "url": "https://github.com/161chihuahuas/bulb/issues"
   },
   "dependencies": {
     "socks": "^2.8.4"
@@ -22,7 +22,7 @@
   "engines": {
     "node": ">=22"
   },
-  "homepage": "https://github.com/161chihuahuas/granax",
+  "homepage": "https://github.com/161chihuahuas/bulb",
   "keywords": [
     "tor",
     "onion",
@@ -39,10 +39,10 @@
   ],
   "license": "LGPL-3.0",
   "main": "index.js",
-  "name": "@tacticalchihuahua/granax",
+  "name": "@tacticalchihuahua/bulb",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/161chihuahuas/granax.git"
+    "url": "git+https://github.com/161chihuahuas/bulb.git"
   },
   "scripts": {
     "linter": "eslint index.js lib --no-config-lookup",
