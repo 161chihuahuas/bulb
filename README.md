@@ -8,7 +8,7 @@ This library is focused on completeness of the protocol as well as simplicity an
 ## install
 
 ```
-npm install @tacticalchihuahua/bulb --save
+npm install @yipyap/bulb --save
 ```
 
 > As part of the installation process, it will download the Tor Expert 
@@ -16,12 +16,12 @@ npm install @tacticalchihuahua/bulb --save
 
 ## usage
 
-Complete documentation can be [found here](https://lilyanne.me/bulb).
+Complete documentation can be [found here](https://chihuahua.rodeo/bulb).
 
 ### example: hidden tcp echo server
 
 ```js
-const { TorContext } = require('@tacticalchihuahua/bulb');
+const { TorContext } = require('@yipyap/bulb');
 
 const tor = await TorContext.create();
 const server = tor.createServer((socket) => socket.pipe(socket)); 
@@ -42,7 +42,7 @@ await client.connect(address);
 ## copying
 
 > bulb - embedded tor for node.js  
-> anti-copyright 2025, tactical chihuahua
+> anti-copyright 2025, chihuahua.rodeo
 
 Licensed under the GNU Lesser General Public License 3.0.
 
