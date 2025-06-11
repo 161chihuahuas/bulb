@@ -8,7 +8,7 @@ This library is focused on completeness of the protocol as well as simplicity an
 ## install
 
 ```
-npm install @yipyap/bulb --save
+npm install @yipsec/bulb --save
 ```
 
 > As part of the installation process, it will download the Tor Expert 
@@ -21,7 +21,7 @@ Complete documentation can be [found here](https://chihuahua.rodeo/bulb).
 ### example: hidden tcp echo server
 
 ```js
-const { TorContext } = require('@yipyap/bulb');
+const { TorContext } = require('@yipsec/bulb');
 
 const tor = await TorContext.create();
 const server = tor.createServer((socket) => socket.pipe(socket)); 

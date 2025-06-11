@@ -39,7 +39,7 @@
   ],
   "license": "LGPL-3.0",
   "main": "index.js",
-  "name": "@yipyap/bulb",
+  "name": "@yipsec/bulb",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/161chihuahuas/bulb.git"
