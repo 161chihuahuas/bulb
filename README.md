@@ -16,7 +16,7 @@ npm install @yipsec/bulb --save
 
 ## usage
 
-Complete documentation can be [found here](https://chihuahua.rodeo/bulb).
+Complete documentation can be [found here](https://yipsec/bulb).
 
 ### example: hidden tcp echo server
 
@@ -42,7 +42,7 @@ await client.connect(address);
 ## copying
 
 > bulb - embedded tor for node.js  
-> anti-copyright 2025, chihuahua.rodeo
+> anti-copyright 2025, yipsec
 
 Licensed under the GNU Lesser General Public License 3.0.
 
